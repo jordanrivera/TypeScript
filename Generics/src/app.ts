@@ -42,15 +42,18 @@ extractAndConvert({name: 'Max'}, 'name');
 
 
 
-class DataStorage<T> {
-    private data: T[] = [];
+class DataStorage{ 
+    private data: (string | number | boolean) [] = [];
 
 
-    addItem(item: T){
+    addItem(item: string | number | boolean){
         this.data.push(item)
     }
 
-    removeItem(item: T){
+    removeItem(item: string | number | boolean){
+        if (this.data.indexOf(item) === -1){
+            return;
+        }
         this.data.splice(this.data.indexOf(item),1);
     }
 
@@ -59,16 +62,38 @@ class DataStorage<T> {
     }
 }
 
-const textStorage = new DataStorage<string>();
+const textStorage = new DataStorage();
 textStorage.addItem('Max');
 textStorage.addItem('Manu');
 textStorage.removeItem('Max');
 console.log(textStorage.getItems());
 
-const numberStorage = new DataStorage<number>();
-const objStorage = new DataStorage<object>();
-objStorage.addItem({name: 'Max'});
-objStorage.addItem({name: 'Manu'});
+const numberStorage = new DataStorage();
+//const objStorage = new DataStorage<object>();
+//const maxObj = {name: 'Max'};
+//objStorage.addItem(maxObj);
+//objStorage.addItem({name: 'Manu'});
 //...
-objStorage.removeItem({name: 'Manu'});
-console.log(objStorage.getItems());
+//objStorage.removeItem(maxObj);
+//console.log(objStorage.getItems());
+
+interface CourseGaol {
+    title: string;
+    description: string;
+    completeUntil: Date;
+}
+
+function createCourseGoal(
+    title: string, 
+    description: string, 
+    date: Date): CourseGaol{
+    let courseGaol: Partial<CourseGaol> = {};
+    courseGaol.title = title;
+    courseGaol.description = description;
+    courseGaol.completeUntil = date;
+    return courseGaol as CourseGaol;
+}
+
+const names: Readonly<string[]> = ["Max, 'Anna"];
+//names.push('Manu');
+//names.pop();
