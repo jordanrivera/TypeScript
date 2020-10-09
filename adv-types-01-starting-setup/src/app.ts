@@ -23,6 +23,10 @@ type Numeric = number | boolean;
 
 type Universal = Combinable & Numeric;
 
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+function add(a: string, b: number): string;
+function add(a: number, b: string): string;
 function add(a: Combinable, b: Combinable){
     if (typeof a === 'string' || typeof b === 'string'){
       return a.toString() + b.toString();  
@@ -32,8 +36,23 @@ function add(a: Combinable, b: Combinable){
 
 }
 
-const result = add('max', 'Schawrz') as string;
+const result = add('Max', 'Swarz');
 result.split(' ');
+
+
+const fetchedUserData = {
+    id:'u1',
+    name: 'Max',
+    job: {title: 'CEO', description: 'My own company'}
+};
+
+console.log(fetchedUserData?.job?.title);
+
+const userInput = undefined;
+
+const storeddata = userInput ?? 'DEFAULT';
+
+console.log(storeddata);
 
 
 type UnknownEmployee = Employee | Admin;
