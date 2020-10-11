@@ -90,3 +90,57 @@ class Product {
         return this._price * (1 + tax);
     }
 }
+
+const p1 = new Product('Book', 19);
+const p2 = new Product('Book2', 29);
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor ){
+    const originalMethod = descriptor.value;
+    const adjDescriptor: PropertyDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get() {
+            const boundFn = originalMethod.bind(this);
+            return boundFn;
+        }
+    };
+    return adjDescriptor;
+}
+
+class Printer {
+    message = 'This works!';
+
+    @Autobind
+    showMessage(){
+        console.log(this.message);
+    }
+}
+
+const p =  new Printer();
+
+const button = document. querySelector('button')!;
+button.addEventListener('click', p.showMessage.bind(p));
+
+
+class Course {
+    title: string;
+    price: number;
+
+    constructor(t: string, p: number){
+        this.title = t;
+        this.price = p;
+    }
+}
+const courseForm = document.querySelector('form')!;
+    courseForm.addEventListener('submit', event =>{
+        event.preventDefault();
+        const titleEl = document.getElementById('title') as HTMLInputElement;
+        const priceEl = document.getElementById('price') as HTMLInputElement;
+
+        const title = titleEl.value;
+        const price = +priceEl.value;
+
+        const createdCourse = new Course (title, price);
+        console.log(createdCourse);
+});
+
