@@ -1,3 +1,31 @@
+//Validation 
+interface Validatbale {
+    value: string | number;
+    required?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    min: number;
+    max: number;
+}
+
+function validate(validatableInput: ValidityState){
+    
+}
+
+//autobind decorator
+function autobind(target: any, methodName: string, descriptor: PropertyDescriptor){
+    const originalMethod = descriptor.value;
+    const adjDescriptor: PropertyDescriptor = {
+        configurable: true,
+        get() {
+            const boundFn = originalMethod.bind(this);
+            return boundFn;
+        }
+    };
+    return adjDescriptor;
+}
+
+//ProjectInputClass
 class ProjectInput {
     templateElement: HTMLTemplateElement;
     hostElement: HTMLDivElement;
@@ -20,9 +48,40 @@ class ProjectInput {
         this.configure();
         this.attach();
     }
+
+    private gatherUserInput(): [string, string, number] | void {
+        const enteredTitle = this.titleInputElement.value;
+        const enteredDescription = this.descriptionInputElement.value;
+        const enteredPeople = this.peopleInputElement.value;
+
+        if (
+            validate({value: enteredTitle,require: true, minLength: 5 }) &&
+            validate({value: enteredDescription, require: true, minLength: 5}) &&
+            validate({value: enteredPeople, require: true, minLength: 5})
+        ){
+            alert('Invalid input, please try again!');
+            return;
+        } else{
+            return [enteredTitle, enteredDescription, +enteredPeople];
+        }
+    }
+
+    private clearInput(){
+        this.titleInputElement.value = '';
+        this.descriptionInputElement.value = '';
+        this.peopleInputElement.value = '';
+    }
+
+    @autobind
     private submitHandler(event: Event){
         event.preventDefault();
         console.log(this.titleInputElement.value);
+        const userInput = this.gatherUserInput();
+        if (Array.isArray(userInput)){
+            const [title, desc, people] = userInput;
+            console.log(title,desc,people)
+            this.clearInput();
+        }
     }
 
     private configure(){
