@@ -1,8 +1,8 @@
 // Project State management
 
 class ProjectState {
-    private listeners: any [] = [];
-    private projects: any [] =  [];
+    private listeners: any[] = [];
+    private projects: any[] =  [];
     private static instance: ProjectState;
 
     private constructor(){
@@ -108,6 +108,7 @@ class ProjectList {
         this.renderContent();
     }
 
+   
     
     private renderProjects(){
         const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement;
@@ -180,8 +181,8 @@ class ProjectInput {
         const peopleValidatable: Validatable = {
             value: +enteredPeople,
             required: true,
-            min: 1,
-            max: 5
+            min: 0,
+            max: 25
         };
 
         if (
@@ -210,7 +211,7 @@ class ProjectInput {
         if (Array.isArray(userInput)){
             const [title, desc, people] = userInput;
             projectState.addProject(title,desc, people);
-            console.log(title,desc,people)
+            //console.log(title,desc,people)
             this.clearInput();
         }
     }
